@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Painel dos Pais | Aniversário Sophia Emanuelly</title>
+<meta name="robots" content="noindex, nofollow">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Rye&family=Playfair+Display:ital,wght@0,600;1,600&family=Josefin+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --leather:#8a5a3b; --leather-dark:#5e3a22; --cream:#f7ecd9; --cream2:#fffaf0;
+    --gold:#c99a4a; --gold-light:#e8c27a; --ink:#3c2a1e; --rose:#c1666b; --green:#5b8a44;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;font-family:'Josefin Sans',sans-serif;color:var(--ink);
+    background:linear-gradient(180deg,#f1e3c4,#f7ecd9 200px, #fdf7ea 100%);
+    min-height:100vh;
+  }
+  header{
+    background:linear-gradient(160deg,#c99a4a,#8a5a3b 55%,#4a2e1a);
+    color:#fffaf0;text-align:center;padding:34px 20px 26px;
+    box-shadow:0 6px 18px rgba(0,0,0,.25);
+  }
+  header h1{font-family:'Rye',serif;margin:0;font-size:clamp(22px,5vw,30px);letter-spacing:1px;}
+  header p{margin:6px 0 0;font-family:'Playfair Display',serif;font-style:italic;color:var(--gold-light);}
+  .wrap{max-width:920px;margin:-18px auto 40px;padding:0 16px;position:relative;z-index:2;}
+
+  .status-note{
+    text-align:center;font-size:12px;color:#8a7256;margin-bottom:10px;display:flex;align-items:center;justify-content:center;gap:6px;
+  }
+  .dot{width:8px;height:8px;border-radius:50%;background:var(--green);display:inline-block;}
+  .dot.off{background:var(--rose);}
+
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:12px;margin-bottom:22px;}
+  .stat-card{
+    background:#fff;border-radius:14px;padding:18px 12px;text-align:center;
+    box-shadow:0 8px 20px rgba(90,60,30,.12);
+  }
+  .stat-card b{display:block;font-family:'Rye',serif;font-size:26px;color:var(--leather-dark);}
+  .stat-card span{font-size:12.5px;color:#8a7256;}
+  .stat-card.yes b{color:var(--green);}
+  .stat-card.no b{color:var(--rose);}
+
+  .panel{
+    background:#fff;border-radius:16px;padding:22px;margin-bottom:20px;
+    box-shadow:0 10px 26px rgba(90,60,30,.12);
+  }
+  .panel h2{
+    font-family:'Rye',serif;color:var(--leather-dark);font-size:19px;margin:0 0 16px;
+    display:flex;align-items:center;gap:8px;
+  }
+  .refresh-btn{
+    float:right;background:var(--gold-light);border:none;border-radius:20px;
+    padding:6px 14px;font-size:12.5px;font-weight:600;cursor:pointer;color:#3c2416;
+  }
+
+  table{width:100%;border-collapse:collapse;font-size:13.5px;}
+  th{text-align:left;padding:10px 8px;color:#8a7256;border-bottom:2px solid #f1e3c4;font-size:12px;text-transform:uppercase;letter-spacing:.4px;}
+  td{padding:10px 8px;border-bottom:1px solid #f6ecd9;vertical-align:top;}
+  tr:hover td{background:#fffaf0;}
+  .badge{padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:700;color:#fff;}
+  .badge.sim{background:var(--green);}
+  .badge.nao{background:var(--rose);}
+  .empty-msg{text-align:center;color:#a58f6c;padding:20px;font-size:13.5px;}
+
+  .gift-form{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:18px;}
+  .gift-form input{
+    flex:1;min-width:160px;padding:11px 14px;border-radius:10px;border:1.5px solid #e3d3ba;font-size:14px;
+  }
+  .gift-form button{
+    background:linear-gradient(160deg,var(--gold-light),var(--gold));border:none;border-radius:10px;
+    padding:11px 20px;font-weight:700;color:#3c2416;cursor:pointer;
+  }
+  .gift-row{
+    display:flex;align-items:center;justify-content:space-between;gap:10px;
+    padding:12px;background:#fbf3e2;border-radius:10px;margin-bottom:8px;
+  }
+  .gift-row.taken{opacity:.6;}
+  .gift-row .info b{display:block;font-size:14px;color:var(--leather-dark);}
+  .gift-row .info span{font-size:12px;color:#8a7256;}
+  .gift-row .actions button{
+    border:none;border-radius:20px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;margin-left:6px;
+  }
+  .btn-del{background:#eecfcf;color:#a14a4f;}
+  .btn-liberar{background:#dcecd0;color:#4f7a34;}
+
+  .link-box{
+    background:#fbf3e2;border-radius:10px;padding:12px 14px;font-size:13px;color:var(--leather-dark);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:18px;flex-wrap:wrap;
+  }
+  .link-box code{word-break:break-all;font-size:12.5px;}
+  .link-box button{border:none;background:var(--gold);color:#fff;border-radius:8px;padding:6px 10px;font-size:12px;cursor:pointer;flex:0 0 auto;}
+</style>
+</head>
+<body>
+<header>
+  <h1>🤠 Painel dos Pais</h1>
+  <p>Aniversário da Sophia Emanuelly · 10 anos · Tema Boiadeira</p>
+</header>
+
+<div class="wrap">
+  <div class="status-note"><span class="dot" id="connDot"></span><span id="connText">Verificando conexão com o convite...</span></div>
+
+  <div class="link-box">
+    <div>🔗 Link do convite para enviar aos convidados:<br><code id="inviteLink">carregando...</code></div>
+    <button onclick="copiarLink()">Copiar link</button>
+  </div>
+
+  <div class="stats">
+    <div class="stat-card"><b id="totalResp">0</b><span>Respostas</span></div>
+    <div class="stat-card yes"><b id="totalSim">0</b><span>Confirmados</span></div>
+    <div class="stat-card no"><b id="totalNao">0</b><span>Não vão</span></div>
+    <div class="stat-card"><b id="totalPessoas">0</b><span>Total de pessoas</span></div>
+  </div>
+
+  <div class="panel">
+    <h2>📋 Confirmações de Presença <button class="refresh-btn" onclick="loadAll()">🔄 Atualizar</button></h2>
+    <div style="text-align:center;font-size:12px;color:#a58f6c;margin-top:-6px;margin-bottom:18px;">Atualiza automaticamente a cada 10 segundos</div>
+    <div style="overflow-x:auto;">
+      <table id="confirmTable">
+        <thead>
+          <tr><th>Nome</th><th>Status</th><th>Pessoas</th><th>Mensagem</th><th>Data</th></tr>
+        </thead>
+        <tbody id="confirmBody"></tbody>
+      </table>
+    </div>
+    <div class="empty-msg" id="confirmEmpty" style="display:none;">Nenhuma confirmação recebida ainda.</div>
+  </div>
+
+  <div class="panel">
+    <h2>🎁 Lista de Presentes</h2>
+    <p style="color:#8a7256;font-size:13px;margin-top:-8px;">Adicione aqui os itens da lista de presentes. Assim que salvar, aparece automaticamente no convite dos convidados.</p>
+    <div class="gift-form">
+      <input type="text" id="giftNome" placeholder="Nome do presente (ex: Boneca cavalinho)">
+      <input type="text" id="giftLink" placeholder="Link do produto (opcional)">
+      <button onclick="addGift()">+ Adicionar</button>
+    </div>
+    <div id="giftListPanel"></div>
+    <div class="empty-msg" id="giftEmpty" style="display:none;">Nenhum item na lista ainda.</div>
+  </div>
+</div>
+
+<script>
+const BIN_ID = "cbeedee";
+const API_BASE = "https://extendsclass.com/api/json-storage/bin/" + BIN_ID;
+
+/* Corrige o bug do CDN cacheando respostas antigas por até 2h */
+function apiUrl(){
+  return API_BASE + "?nocache=" + Date.now() + Math.random().toString(36).slice(2);
+}
+
+document.getElementById('inviteLink').textContent = location.href.replace(/painel\.html.*$/, 'index.html');
+function copiarLink(){
+  const link = document.getElementById('inviteLink').textContent;
+  navigator.clipboard.writeText(link).then(()=>{
+    alert('Link copiado! Agora é só colar no WhatsApp/grupo — o convite mostra uma prévia bonita, não um link seco.');
+  }).catch(()=>{
+    prompt('Copie o link abaixo:', link);
+  });
+}
+
+function setConn(ok){
+  document.getElementById('connDot').classList.toggle('off', !ok);
+  document.getElementById('connText').textContent = ok
+    ? 'Conectado — sincronizado com o convite'
+    : 'Sem conexão com o servidor de confirmações. Tentando novamente...';
+}
+
+async function fetchData(){
+  const res = await fetch(apiUrl(), {cache:'no-store', headers:{'Cache-Control':'no-cache'}});
+  if(!res.ok) throw new Error('fail');
+  const json = await res.json();
+  json.confirmacoes = json.confirmacoes || [];
+  json.presentes = json.presentes || [];
+  return json;
+}
+async function saveData(data){
+  const res = await fetch(apiUrl(), {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error('fail');
+}
+
+async function loadAll(){
+  try{
+    const data = await fetchData();
+    setConn(true);
+    renderConfirmacoes(data.confirmacoes || []);
+    renderPresentes(data.presentes || []);
+  }catch(e){
+    setConn(false);
+  }
+}
+
+function renderConfirmacoes(list){
+  const body = document.getElementById('confirmBody');
+  const empty = document.getElementById('confirmEmpty');
+  body.innerHTML = '';
+  if(list.length === 0){ empty.style.display='block'; }
+  else { empty.style.display='none'; }
+
+  let sim=0, nao=0, pessoas=0;
+  list.slice().reverse().forEach(c=>{
+    if(c.status==='sim'){ sim++; pessoas += parseInt(c.acompanhantes||1); }
+    else nao++;
+    const tr = document.createElement('tr');
+    const dataFmt = c.data ? new Date(c.data).toLocaleString('pt-BR') : '-';
+    tr.innerHTML = `
+      <td><b>${escapeHtml(c.nome)}</b></td>
+      <td><span class="badge ${c.status}">${c.status==='sim' ? 'Vai' : 'Não vai'}</span></td>
+      <td>${c.status==='sim' ? (c.acompanhantes||1) : '-'}</td>
+      <td>${c.mensagem ? escapeHtml(c.mensagem) : '-'}</td>
+      <td>${dataFmt}</td>
+    `;
+    body.appendChild(tr);
+  });
+  document.getElementById('totalResp').textContent = list.length;
+  document.getElementById('totalSim').textContent = sim;
+  document.getElementById('totalNao').textContent = nao;
+  document.getElementById('totalPessoas').textContent = pessoas;
+}
+
+function renderPresentes(list){
+  const wrap = document.getElementById('giftListPanel');
+  const empty = document.getElementById('giftEmpty');
+  wrap.innerHTML = '';
+  if(list.length === 0){ empty.style.display='block'; return; }
+  empty.style.display='none';
+  list.forEach(g=>{
+    const div = document.createElement('div');
+    div.className = 'gift-row' + (g.reservado ? ' taken' : '');
+    div.innerHTML = `
+      <div class="info">
+        <b>🎀 ${escapeHtml(g.nome)}</b>
+        <span>${g.link ? escapeHtml(g.link) : ''} ${g.reservado ? ' · Reservado por ' + escapeHtml(g.reservadoPor) : ''}</span>
+      </div>
+      <div class="actions">
+        ${g.reservado ? `<button class="btn-liberar" onclick="liberarGift('${g.id}')">Liberar</button>` : ''}
+        <button class="btn-del" onclick="delGift('${g.id}')">Remover</button>
+      </div>
+    `;
+    wrap.appendChild(div);
+  });
+}
+
+function escapeHtml(str){
+  return String(str).replace(/[&<>"']/g, s => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[s]));
+}
+
+async function addGift(){
+  const nome = document.getElementById('giftNome').value.trim();
+  const link = document.getElementById('giftLink').value.trim();
+  if(!nome){ alert('Digite o nome do presente.'); return; }
+  try{
+    const data = await fetchData();
+    data.presentes = data.presentes || [];
+    data.presentes.push({id: Date.now(), nome, link, reservado:false, reservadoPor:''});
+    await saveData(data);
+    document.getElementById('giftNome').value='';
+    document.getElementById('giftLink').value='';
+    loadAll();
+  }catch(e){ alert('Não foi possível salvar agora. Tente novamente.'); }
+}
+async function delGift(id){
+  if(!confirm('Remover este item da lista?')) return;
+  try{
+    const data = await fetchData();
+    data.presentes = (data.presentes||[]).filter(g=>String(g.id)!==String(id));
+    await saveData(data);
+    loadAll();
+  }catch(e){ alert('Não foi possível remover agora. Tente novamente.'); }
+}
+async function liberarGift(id){
+  try{
+    const data = await fetchData();
+    const item = (data.presentes||[]).find(g=>String(g.id)===String(id));
+    if(item){ item.reservado=false; item.reservadoPor=''; }
+    await saveData(data);
+    loadAll();
+  }catch(e){ alert('Não foi possível atualizar agora. Tente novamente.'); }
+}
+
+loadAll();
+setInterval(loadAll, 10000);
+</script>
+</body>
+</html>
