@@ -275,6 +275,7 @@
 </style>
 </head>
 <body>
+<div id="dbErrorBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:200;background:#b3403f;color:#fff;padding:10px 14px;text-align:center;font-family:'Josefin Sans',sans-serif;font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.4);">⚠️ Não foi possível conectar com o banco de dados. Sua confirmação pode não ser salva. Tente novamente mais tarde.</div>
 <div class="stars"></div>
 <div id="bgAmbientWrap"><video id="bgAmbientVideo" src="assets/bg-ambiente.mp4" autoplay muted loop playsinline></video></div>
 <canvas id="confettiCanvas"></canvas>
@@ -449,7 +450,7 @@
 
 <script>
 /* ================== FIREBASE (Realtime Database via REST) ================== */
-const DB_URL = "https://convites-lenny-default-rtdb.firebaseio.com";
+const DB_URL = "https://compra-amano-default-rtdb.firebaseio.com";
 const EVENTO = "sophia10anos";
 const EVENT_DATE = new Date("2026-10-04T14:00:00-03:00");
 let currentMusic = null;
@@ -463,10 +464,20 @@ async function fbGet(path){
 }
 async function fbPost(path, data){
   const res = await fetch(`${DB_URL}/${path}.json`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error('db-error-' + res.status);
   return await res.json();
 }
 async function fbPatch(path, data){
-  await fetch(`${DB_URL}/${path}.json`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  const res = await fetch(`${DB_URL}/${path}.json`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error('db-error-' + res.status);
+}
+function mostrarErroBanco(show){
+  const el = document.getElementById('dbErrorBanner');
+  if(el) el.style.display = show ? 'block' : 'none';
+}
+async function verificarBanco(){
+  const ok = await fbGet(`${EVENTO}`);
+  mostrarErroBanco(ok === null);
 }
 
 /* ================== INTRO / ENVELOPE ================== */
@@ -551,10 +562,17 @@ async function enviarConfirmacao(){
   const acomp = statusSelecionado==='sim' ? document.getElementById('rsvpAcomp').value : '0';
   if(statusSelecionado==='sim' && !acomp){ alert('Por favor, selecione a quantidade de pessoas.'); return; }
 
-  await fbPost(`${EVENTO}/confirmacoes`, {
-    nome, status: statusSelecionado, acompanhantes: acomp, mensagem: msg,
-    data: new Date().toISOString()
-  });
+  try {
+    await fbPost(`${EVENTO}/confirmacoes`, {
+      nome, status: statusSelecionado, acompanhantes: acomp, mensagem: msg,
+      data: new Date().toISOString()
+    });
+  } catch(err){
+    mostrarErroBanco(true);
+    feedback.textContent = '❌ Não foi possível salvar sua confirmação agora (sem conexão com o banco de dados). Por favor, tente novamente mais tarde.';
+    feedback.classList.add('show');
+    return;
+  }
 
   const overlay = document.getElementById('reactionOverlay');
   const txt = document.getElementById('reactionText');
@@ -747,6 +765,7 @@ function setupCarouselDots(count){
 // Load gallery on page load
 setTimeout(loadGalleryFromDB, 1500);
 setTimeout(carregarTamanhosInfo, 1500);
+setTimeout(verificarBanco, 1200);
 </script>
 </body>
 </html>
