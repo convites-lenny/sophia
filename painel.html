@@ -323,7 +323,7 @@ function mostrarErroBanco(show){
   if(el) el.style.display = show ? 'block' : 'none';
 }
 async function verificarBanco(){
-  const ok = await fbGet(`${EVENTO}/confirmacoes`);
+  const ok = await fbGet(`${EVENTO}`);
   mostrarErroBanco(ok === null);
 }
 async function fbPost(path, data){
