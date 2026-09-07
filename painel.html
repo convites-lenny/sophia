@@ -111,6 +111,7 @@
 </style>
 </head>
 <body>
+<div id="dbErrorBanner" style="display:none;position:fixed;top:0;left:0;right:0;z-index:200;background:#b3403f;color:#fff;padding:10px 14px;text-align:center;font-family:'Josefin Sans',sans-serif;font-weight:600;font-size:13px;box-shadow:0 4px 12px rgba(0,0,0,.4);">⚠️ Sem conexão com o banco de dados (permissão negada ou offline). As listas podem estar desatualizadas.</div>
 <div class="wrap">
 
   <!-- HOME -->
@@ -317,18 +318,29 @@ async function fbGet(path){
     return await res.json();
   }catch(e){ return null; }
 }
+function mostrarErroBanco(show){
+  const el = document.getElementById('dbErrorBanner');
+  if(el) el.style.display = show ? 'block' : 'none';
+}
+async function verificarBanco(){
+  const ok = await fbGet(`${EVENTO}/confirmacoes`);
+  mostrarErroBanco(ok === null);
+}
 async function fbPost(path, data){
   const res = await fetch(`${DB_URL}/${path}.json`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
   return await res.json();
 }
 async function fbPut(path, data){
-  await fetch(`${DB_URL}/${path}.json`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  const res = await fetch(`${DB_URL}/${path}.json`, {method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error('db-error-' + res.status);
 }
 async function fbPatch(path, data){
-  await fetch(`${DB_URL}/${path}.json`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  const res = await fetch(`${DB_URL}/${path}.json`, {method:'PATCH', headers:{'Content-Type':'application/json'}, body: JSON.stringify(data)});
+  if(!res.ok) throw new Error('db-error-' + res.status);
 }
 async function fbDelete(path){
-  await fetch(`${DB_URL}/${path}.json`, {method:'DELETE'});
+  const res = await fetch(`${DB_URL}/${path}.json`, {method:'DELETE'});
+  if(!res.ok) throw new Error('db-error-' + res.status);
 }
 
 /* ================== NAV ================== */
@@ -589,8 +601,14 @@ async function salvarTamanhosSophia(){
     const val = document.getElementById(id).value.trim();
     if(val) data[key] = val;
   });
-  await fbPut(`${EVENTO}/tamanhosSophia`, Object.keys(data).length ? data : null);
-  showSuccess('tamanhosSuccess');
+  try{
+    await fbPut(`${EVENTO}/tamanhosSophia`, Object.keys(data).length ? data : null);
+    mostrarErroBanco(false);
+    showSuccess('tamanhosSuccess');
+  }catch(e){
+    mostrarErroBanco(true);
+    alert('❌ Não foi possível salvar os tamanhos (sem conexão com o banco de dados).');
+  }
 }
 
 async function loadTamanhosSophia(){
@@ -622,6 +640,7 @@ function setupShare(){
 // Initial load
 loadGallery();
 loadMusicStatus();
+verificarBanco();
 </script>
 </body>
 </html>
